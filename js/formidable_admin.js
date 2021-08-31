@@ -829,6 +829,13 @@ function frmAdminBuildJS() {
 						// A new field was dragged into the form
 						insertNewFieldByDragging( this, ui.item, opts );
 					}
+				} else if ( ui.item.hasClass( 'frm_field_box' ) ) {
+					// dragging a group.
+					getFieldsInRow( ui.item.children( 'ul' ) ).each(
+						function() {
+							updateFieldAfterMovingBetweenSections( jQuery( this ) );
+						}
+					);
 				}
 			},
 			change: function( event, ui ) {
@@ -1287,19 +1294,22 @@ function frmAdminBuildJS() {
 	}
 
 	// Get the form ID where a field is dropped
-	function getFormIdForFieldPlacement( section ) {
-		var formId = '';
+	function getFormIdForFieldPlacement( $section ) {
+		var formSelect, formId, $startDivider, fieldId;
 
-		if ( typeof section[0] !== 'undefined' ) {
-			var sDivide = section.children( '.start_divider' );
-			sDivide.children( '.edit_field_type_end_divider' ).appendTo( sDivide );
-			if ( typeof section.attr( 'data-formid' ) !== 'undefined' ) {
-				var fieldId = section.attr( 'data-fid' );
-				formId = jQuery( 'input[name="field_options[form_select_' + fieldId + ']"]' ).val();
+		formId = '';
+
+		if ( $section.length && $section.is( '[data-fid]' ) ) {
+			$startDivider = $section.children( '.start_divider' );
+			$startDivider.children( '.edit_field_type_end_divider' ).appendTo( $startDivider );
+			fieldId = $section.attr( 'data-fid' );
+			formSelect = document.querySelector( 'input[name="field_options[form_select_' + fieldId + ']"]' );
+			if ( null !== formSelect ) {
+				formId = formSelect.value;
 			}
 		}
 
-		if ( typeof formId === 'undefined' || formId === '' ) {
+		if ( '' === formId ) {
 			formId = thisFormId;
 		}
 
