@@ -387,6 +387,10 @@ class FrmFormActionsController {
 		);
 
 		$fields = FrmField::get_all_for_form( $form->id );
+		$embedded_forms = FrmProFormsHelper::get_embedded_form_ids( $form_id );
+		$embedded_fields = FrmDb::get_results( $wpdb->prefix . 'frm_fields', array( 'form_id' => $embedded_forms ) );
+
+		$fields = array_merge( $fields, $embedded_fields );
 		foreach ( $fields as $k => $f ) {
 			$f    = (array) $f;
 			$opts = (array) $f['field_options'];
