@@ -163,7 +163,24 @@ class FrmMigrate {
 			unset( $q );
 		}
 
+		$this->add_index_for_field_type();
 		$this->add_composite_indexes_for_entries();
+	}
+
+	/**
+	 * @since x.x
+	 *
+	 * @return void
+	 */
+	private function add_index_for_field_type() {
+		global $wpdb;
+
+		$table_name = "{$wpdb->prefix}frm_fields";
+		$index_name = 'idx_type';
+
+		if ( ! self::index_exists( $table_name, $index_name ) ) {
+			$wpdb->query( "CREATE INDEX idx_type ON `{$wpdb->prefix}frm_fields` (`type`(20))" );
+		}
 	}
 
 	/**
