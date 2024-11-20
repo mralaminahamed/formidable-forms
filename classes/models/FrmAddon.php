@@ -794,6 +794,9 @@ class FrmAddon {
 			'body'       => $api_params,
 			'timeout'    => 25,
 			'user-agent' => $this->plugin_slug . '/' . $this->version . '; ' . get_bloginfo( 'url' ),
+			'headers'    => array(
+				'Referer' => home_url(),
+			),
 		);
 
 		$resp              = wp_remote_post(
