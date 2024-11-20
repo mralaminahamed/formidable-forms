@@ -793,12 +793,12 @@ class FrmAddon {
 		$arg_array = array(
 			'body'       => $api_params,
 			'timeout'    => 25,
-			'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',//$this->plugin_slug . '/' . $this->version . '; ' . get_bloginfo( 'url' ),
+			'user-agent' => $this->plugin_slug . '/' . $this->version . '; ' . get_bloginfo( 'url' ),
 		);
 
-//		$arg_array['headers'] = array(
-//			'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-//		);
+		$arg_array['headers'] = array(
+			'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+		);
 		$resp = wp_remote_post(
 			$this->store_url . '?l=' . urlencode( base64_encode( $this->license ) ),
 			$arg_array
